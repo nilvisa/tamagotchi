@@ -12,6 +12,7 @@ namespace tamagotchi
         public int Dicipline { get; set; }
         public int Hungry { get; set; }
         public int Happy { get; set; }
+        public int Poop {get; set;}
 
         public string food;
 
@@ -27,9 +28,19 @@ namespace tamagotchi
 
         public void WriteTama()
         {
+            if (Hungry > 5)
+            {
+                Poop += 1;
+                Hungry = 2;
+            }
+
             WriteName();
             DrawTama();
             DrawChart();
+
+            if (Poop > 0) DrawPoop();
+            
+            
         }
 
         public void ChangeStage(string stage)
@@ -39,15 +50,15 @@ namespace tamagotchi
 
         public void WriteName()
         {
-            Console.WriteLine();
+            Console.SetCursorPosition(7, 2);
             Console.WriteLine("   ♥  ♥  ♥  {0}  ♥  ♥  ♥", Name);
             Console.WriteLine();
         }
 
         public void DrawChart()
         {
-            Console.WriteLine();
-
+            Console.SetCursorPosition(5, 20);
+      
             Console.Write("Dicipline: ");
             Console.ForegroundColor = ConsoleColor.Cyan;
             for(var i = 0; i < Dicipline; i++)
@@ -77,10 +88,26 @@ namespace tamagotchi
             Console.WriteLine();
         }
 
+        public void DrawPoop()
+        {
+            Console.SetCursorPosition(5, 22);
+            Console.Write("Poop: ");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            for (var i = 0; i < Poop; i++)
+            {
+                Console.Write("▲");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+           
+        }
+
         public void DrawTama()
         {
-            Console.WriteLine();
-
+            
             switch(Stage)
             {
                 case "egg":
@@ -121,114 +148,121 @@ namespace tamagotchi
         public void TamaTalks(string String)
         {
             Console.ForegroundColor = Color;
+            Console.WriteLine();
             Console.Write("{0}> ", Name);
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(String);
             Console.WriteLine();
+
         }
 
         void Egg()
         {
             Console.ForegroundColor = Color;
-            Console.WriteLine("       ■■       ");
-            Console.WriteLine("     ■    ■     ");
-            Console.WriteLine("   ■        ■   ");
-            Console.WriteLine("  ■          ■  ");
-            Console.WriteLine(" ■            ■ ");
-            Console.WriteLine("■              ■");
-            Console.WriteLine("■              ■");
-            Console.WriteLine("■              ■");
-            Console.WriteLine("  ■          ■  ");
-            Console.WriteLine("    ■ ■■■■ ■    ");
+            Console.WriteLine("                    ■■       ");
+            Console.WriteLine("                  ■    ■     ");
+            Console.WriteLine("                ■        ■   ");
+            Console.WriteLine("               ■          ■  ");
+            Console.WriteLine("              ■            ■ ");
+            Console.WriteLine("             ■              ■");
+            Console.WriteLine("             ■              ■");
+            Console.WriteLine("             ■              ■");
+            Console.WriteLine("               ■          ■  ");
+            Console.WriteLine("                 ■ ■■■■ ■    ");
          }
 
 
         void Baby()
         {
             Console.ForegroundColor = Color;
-            Console.WriteLine("   ■ ■■■■ ■   ");
-            Console.WriteLine(" ■          ■ ");
-            Console.WriteLine("■  ■      ■  ■");
-            Console.WriteLine("■    ■■■■    ■");
-            Console.WriteLine("■            ■");
-            Console.WriteLine(" ■          ■ ");
-            Console.WriteLine("   ■ ■■■■ ■   ");
-        }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("                  ■ ■■■■ ■   ");
+            Console.WriteLine("                ■          ■ ");
+            Console.WriteLine("               ■  ■      ■  ■");
+            Console.WriteLine("               ■    ■■■■    ■");
+            Console.WriteLine("               ■            ■");
+            Console.WriteLine("                ■          ■ ");
+            Console.WriteLine("                  ■ ■■■■ ■   ");
+        } 
 
         void GoodTeen()
         {
             Console.ForegroundColor = Color;
-            Console.WriteLine("    ■ ■■■■ ■■   ");
-            Console.WriteLine("  ■           ■  ");
-            Console.WriteLine(" ■  ■       ■  ■ ");
-            Console.WriteLine(" ■    ■■■■■    ■ ");
-            Console.WriteLine("■■             ■■");
-            Console.WriteLine("  ■           ■  ");
-            Console.WriteLine("   ■    ■    ■   ");
-            Console.WriteLine("    ■  ■ ■  ■   ");
-            Console.WriteLine("     ■     ■     ");
+            Console.WriteLine();
+            Console.WriteLine("                  ■ ■■■■ ■■   ");
+            Console.WriteLine("                ■           ■  ");
+            Console.WriteLine("               ■  ■       ■  ■ ");
+            Console.WriteLine("               ■    ■■■■■    ■ ");
+            Console.WriteLine("              ■■             ■■");
+            Console.WriteLine("                ■           ■  ");
+            Console.WriteLine("                 ■    ■    ■   ");
+            Console.WriteLine("                  ■  ■ ■  ■   ");
+            Console.WriteLine("                   ■     ■     ");
         }
 
         void BadTeen()
         {
             Console.ForegroundColor = Color;
-            Console.WriteLine("        ■ ■■■ ■      ");
-            Console.WriteLine("      ■         ■    ");
-            Console.WriteLine(" ■■■■    ■   ■    ■  ");
-            Console.WriteLine("■■■■■              ■ ");
-            Console.WriteLine("     ■            ■  ");
-            Console.WriteLine("     ■            ■  ");
-            Console.WriteLine("     ■             ■");
-            Console.WriteLine("     ■      ■       ■");
-            Console.WriteLine("       ■ ■ ■  ■ ■ ■  ");
+            Console.WriteLine();
+            Console.WriteLine("                     ■ ■■■ ■      ");
+            Console.WriteLine("                   ■         ■    ");
+            Console.WriteLine("              ■■■■    ■   ■    ■  ");
+            Console.WriteLine("             ■■■■■              ■ ");
+            Console.WriteLine("                  ■            ■  ");
+            Console.WriteLine("                  ■            ■  ");
+            Console.WriteLine("                  ■             ■");
+            Console.WriteLine("                  ■      ■       ■");
+            Console.WriteLine("                    ■ ■ ■  ■ ■ ■  ");
         }
 
         void GoodAdult()
         {
             Console.ForegroundColor = Color;
-            Console.WriteLine("     ■       ■     ");
-            Console.WriteLine("    ■■■■   ■■■■    ");
-            Console.WriteLine("   ■■■■■■■■■■■■■   ");
-            Console.WriteLine("   ■           ■   ");
-            Console.WriteLine("  ■  ■       ■  ■  ");
-            Console.WriteLine("  ■     ■■■     ■  ");
-            Console.WriteLine("■■■             ■■■");
-            Console.WriteLine("   ■           ■   ");
-            Console.WriteLine("    ■    ■    ■    ");
-            Console.WriteLine("     ■  ■ ■  ■     ");
-            Console.WriteLine("      ■     ■      ");
+            Console.WriteLine("                   ■       ■     ");
+            Console.WriteLine("                  ■■■■   ■■■■    ");
+            Console.WriteLine("                 ■■■■■■■■■■■■■   ");
+            Console.WriteLine("                 ■           ■   ");
+            Console.WriteLine("                ■  ■       ■  ■  ");
+            Console.WriteLine("                ■     ■■■     ■  ");
+            Console.WriteLine("              ■■■             ■■■");
+            Console.WriteLine("                 ■           ■   ");
+            Console.WriteLine("                  ■    ■    ■    ");
+            Console.WriteLine("                   ■  ■ ■  ■     ");
+            Console.WriteLine("                    ■     ■      ");
         }
 
         void BadAdult()
         {
             Console.ForegroundColor = Color;
-            Console.WriteLine("        ■ ■■■ ■      ");
-            Console.WriteLine("      ■         ■    ");
-            Console.WriteLine("■■■■■    ■   ■    ■  ");
-            Console.WriteLine("  ■               ■ ");
-            Console.WriteLine("■■■■■              ■ ");
-            Console.WriteLine("     ■            ■  ");
-            Console.WriteLine("     ■            ■  ");
-            Console.WriteLine("     ■              ■");
-            Console.WriteLine("     ■      ■       ■");
-            Console.WriteLine("       ■   ■ ■   ■ ■ ");
-            Console.WriteLine("        ■      ■     ");
+            Console.WriteLine("                     ■ ■■■ ■      ");
+            Console.WriteLine("                   ■         ■    ");
+            Console.WriteLine("             ■■■■■    ■   ■    ■  ");
+            Console.WriteLine("               ■               ■  ");
+            Console.WriteLine("             ■■■■■              ■ ");
+            Console.WriteLine("                  ■            ■  ");
+            Console.WriteLine("                  ■            ■  ");
+            Console.WriteLine("                  ■              ■");
+            Console.WriteLine("                  ■      ■       ■");
+            Console.WriteLine("                    ■   ■ ■   ■ ■ ");
+            Console.WriteLine("                     ■      ■     ");
         }
 
         void Dead()
         {
             Console.ForegroundColor = Color;
-            Console.WriteLine("      ■ ■ ■ ■      ");
-            Console.WriteLine("      ■     ■      ");
-            Console.WriteLine("■ ■ ■ ■     ■ ■ ■ ■");
-            Console.WriteLine("■      R.I.P.     ■");
-            Console.WriteLine("■ ■ ■ ■     ■ ■ ■ ■");
-            Console.WriteLine("      ■     ■      ");
-            Console.WriteLine("      ■     ■      ");
-            Console.WriteLine("      ■     ■      ");
-            Console.WriteLine("      ■     ■      ");
-            Console.WriteLine("      ■     ■      ");
-            Console.WriteLine("      ■ ■ ■ ■      ");
+            Console.WriteLine("                   ■ ■ ■ ■      ");
+            Console.WriteLine("                   ■     ■      ");
+            Console.WriteLine("             ■ ■ ■ ■     ■ ■ ■ ■");
+            Console.WriteLine("             ■      R.I.P.     ■");
+            Console.WriteLine("             ■ ■ ■ ■     ■ ■ ■ ■");
+            Console.WriteLine("                   ■     ■      ");
+            Console.WriteLine("                   ■     ■      ");
+            Console.WriteLine("                   ■     ■      ");
+            Console.WriteLine("                   ■     ■      ");
+            Console.WriteLine("                   ■     ■      ");
+            Console.WriteLine("                   ■ ■ ■ ■      ");
         }
     }
 }
