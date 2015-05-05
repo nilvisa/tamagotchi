@@ -200,6 +200,10 @@ namespace tamagotchi
                     Write("Suit yourself...");
                     Console.ReadLine();
                 }
+                else
+                {
+                    tama.Happy = (tama.Happy != 0 ? tama.Happy -= 1 : 0);
+                }
             }
             Night(tama);
 
@@ -210,9 +214,24 @@ namespace tamagotchi
                 Console.ReadLine();
                 Write("Wake " + tama.Name + " up!"); 
                 bool wake = YesNo(tama, you);
+
                 while(!wake)
                 {
+                    var wakeIt = new List<string>();
+                    wakeIt.AddRange(new String[] {
+                        "You should really wake "+tama.Name+" up...",
+                        "Wake it!",
+                        "Wake "+tama.Name+" or it will become lazy!",
+                        "Really, you should take some responsibility for your pet!",
+                        you+", wake it!!",
+                        "Come on, wake "+tama.Name+" up!",
+                        "Wake it up now!"
+                        });
+                    Random r = new Random();
+                    int index = r.Next(wakeIt.Count);
+
                     tama.TamaTalks("Zzzzzzz...");
+                    Write(wakeIt[index]);
                     wake = YesNo(tama, you);
                 }
                 if (wake) tama.Dicipline += 2;
@@ -252,6 +271,7 @@ namespace tamagotchi
             {
                 Write("Looks like you need to clean up after "+tama.Name+". \r\n Will you do it");
                 poop = YesNo(tama, you);
+                if(poop) tama.Poop = 0;
             }
 
             if(tama.Poop < 0 || tama.Happy < 3)
@@ -278,8 +298,89 @@ namespace tamagotchi
 
             tama.ChangeStage(tama.Dicipline > 3 ? "goodAdult" : "badAdult");
             tama.WriteTama();
-            Write(tama.Good ? "Good job "+you+", you've raised your "+tama.Name+" to become good and well behaving pet!" : "Sorry, "+you+". You haven't done such a good job in raising "+tama.Name+"...");
+            Write(tama.Good ? "Good job "+you+", \r\n you've raised your "+tama.Name+" to become good and well behaved pet!" : "Sorry, "+you+". You haven't done such a good job in raising "+tama.Name+"...");
+            if (tama.Good)
+            {
+                tama.TamaTalks("Would you like to play with me?");
+                play = YesNo(tama, you);
 
+                int i = 0;
+                while (!play)
+                {
+                    var wannaPlay = new List<string>();
+                    wannaPlay.AddRange(new String[] {
+                        "But I thought we had fun together,\r\n won't you play with me?",
+                        "You don't like me anymore? I want to play with you!",
+                        "Now I'm very sad... Please play with me?",
+                        "*cries*"
+                        });
+
+                    tama.Happy = (tama.Happy != 0 ? tama.Happy -= 1 : 0);
+                    tama.TamaTalks(wannaPlay[i]);
+                    i += 1;
+                    if (i == 4) break;
+                    YesNo(tama, you);
+                }
+            }
+            else
+            {
+                Write("You should play some with "+tama.Name+".");
+                play = YesNo(tama, you);
+
+                int i = 0;
+                while (play)
+                {
+                    var wannaPlay = new List<string>();
+                    wannaPlay.AddRange(new String[] {
+                        "I don't wanna play with you...",
+                        "Didn't you hear me? I don't want to play!",
+                        "NOOOOO!"
+                        });
+
+                    tama.Happy += 1;
+                    tama.Dicipline += 1;
+                    tama.TamaTalks(wannaPlay[i]);
+                    Write("Play with " + tama.Name);
+                    i += 1;
+                    if (i == 3) break;
+                    YesNo(tama, you);
+                }
+            }
+
+            tama.WriteTama();
+            if(tama.Good) tama.TamaTalks(play ? "That was so much fun " + you + " !" : "I'm sad now...");
+            else tama.TamaTalks(play ? "That was so much fun... NOT!" : "What ever...");
+
+            tama.TamaTalks("I'm so cold, will you comfort me?");
+            var comfort = YesNo(tama, you);
+
+            if(comfort)
+            {
+                tama.Happy += 2;
+                tama.TamaTalks("It feels like I'm slipping away... \r\n");
+                tama.TamaTalks(tama.Happy > 4 ? "You've been so good to me..." : "Thank you for comforting me, even though I acted bad...");
+            }
+
+            tama.ChangeStage(tama.Happy > 4 ? "angel" : "dead");
+            tama.WriteTama();
+            if(tama.Good)
+            {
+                Write(tama.Name + " has passed... You took good care of it. It had a happy life!");
+                Write("Hit ENTER to exit the game.");
+                Console.ReadLine();
+                return;
+                //END
+            }
+            else
+            {
+                Write(tama.Name + " has passed... \r\n Sorry, but you're a terrible pet-owner "+you);
+                Write("Hit ENTER to exit the game.");
+                Console.ReadLine();
+                return;
+                //END
+            }
+
+          
         }
 
 

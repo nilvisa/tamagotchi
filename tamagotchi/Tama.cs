@@ -50,7 +50,7 @@ namespace tamagotchi
         {
             Stage = stage;
 
-            if (Stage == "goodTeen" || Stage == "goodAdult")
+            if (Stage == "goodTeen" || Stage == "goodAdult" || Stage == "angel")
                 Good = true;
             else
                 Good = false;
@@ -59,7 +59,7 @@ namespace tamagotchi
         public void WriteName()
         {
             Console.SetCursorPosition(7, 2);
-            Console.WriteLine("   ♥  ♥  ♥  {0}  ♥  ♥  ♥", Name);
+            Console.WriteLine("    ♥  ♥  ♥  {0}  ♥  ♥  ♥", Name);
             Console.WriteLine();
         }
 
@@ -139,12 +139,12 @@ namespace tamagotchi
                     GoodAdult();
                     break;
                 case "badAdult":
-                    BadAdult();
                     Color = ConsoleColor.DarkRed;
+                    BadAdult();
                     break;
                 case "angel":
                     Color = ConsoleColor.DarkBlue;
-                    Dead();
+                    Angel();
                     break;
                 case "dead":
                     Color = ConsoleColor.DarkGray;
