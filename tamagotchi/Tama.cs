@@ -13,10 +13,11 @@ namespace tamagotchi
         public int Hungry { get; set; }
         public int Happy { get; set; }
         public int Poop {get; set;}
+        public bool Good { get; set; }
 
         public string food;
 
-        string Stage { get; set; }
+        public string Stage { get; set; }
         ConsoleColor Color { get; set; }
 
         public Tama(string name)
@@ -24,6 +25,7 @@ namespace tamagotchi
             Name = name;
             Stage = "egg";
             Color = ConsoleColor.Magenta;
+            food = "unfed";
         }
 
         public void WriteTama()
@@ -34,6 +36,7 @@ namespace tamagotchi
                 Hungry = 2;
             }
 
+            Console.Clear();
             WriteName();
             DrawTama();
             DrawChart();
@@ -46,6 +49,11 @@ namespace tamagotchi
         public void ChangeStage(string stage)
         {
             Stage = stage;
+
+            if (Stage == "goodTeen" || Stage == "goodAdult")
+                Good = true;
+            else
+                Good = false;
         }
 
         public void WriteName()
@@ -133,6 +141,10 @@ namespace tamagotchi
                 case "badAdult":
                     BadAdult();
                     Color = ConsoleColor.DarkRed;
+                    break;
+                case "angel":
+                    Color = ConsoleColor.DarkBlue;
+                    Dead();
                     break;
                 case "dead":
                     Color = ConsoleColor.DarkGray;
@@ -247,6 +259,22 @@ namespace tamagotchi
             Console.WriteLine("                  ■      ■       ■");
             Console.WriteLine("                    ■   ■ ■   ■ ■ ");
             Console.WriteLine("                     ■      ■     ");
+        }
+
+        void Angel()
+        {
+            Console.ForegroundColor = Color;
+            Console.WriteLine("                     ■■■■■       ");
+            Console.WriteLine("                                 ");
+            Console.WriteLine("                  ■■ ■ ■ ■ ■■    ");
+            Console.WriteLine("                 ■           ■   ");
+            Console.WriteLine("      ■         ■  ■       ■  ■  ");
+            Console.WriteLine("    ■ ■ ■       ■     ■■■     ■  ");
+            Console.WriteLine("      ■         ■             ■  ");
+            Console.WriteLine("      ■          ■           ■   ");
+            Console.WriteLine("                   ■       ■     ");
+            Console.WriteLine("                      ■ ■        ");
+            Console.WriteLine("                       ■         ");
         }
 
         void Dead()
