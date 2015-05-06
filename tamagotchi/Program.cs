@@ -28,21 +28,17 @@ namespace tamagotchi
                 YouTalk(you);
                 name = Console.ReadLine();
             }
-          
+
 
             // EGG
             var tama = new Tama(name);
-            Console.Clear();
-            tama.WriteName();
-            tama.DrawTama();
-            
-            Write("Hit ENTER to welcome " + tama.Name + " to the world!");
-            Console.Read();
+            tama.Hatching();
             tama.ChangeStage("baby");
+
 
             // BABY
             tama.WriteTama();
-            tama.TamaTalks("Hi " + you + "! *tummy rumbling*");           
+            tama.TamaTalks("Hi " + you + "! *tummy rumbling*");          
             Write(tama.Name + " is very hungry, you have to feed it!");          
             Feed(tama, you);
 
@@ -83,7 +79,7 @@ namespace tamagotchi
                     tama.WriteTama();
                     tama.TamaTalks("*throws temper tantrum*");
                     Write("Sorry, but now both you and " + tama.Name + " will be upp all night...");
-                    Console.ReadLine();
+                    System.Threading.Thread.Sleep(2000);
                     Night(tama);
                 }
             }
@@ -115,6 +111,7 @@ namespace tamagotchi
             if (tama.Dicipline > 2) tama.ChangeStage("goodTeen");
             else tama.ChangeStage("badTeen");
 
+
             //TEEN
             tama.WriteTama();
             if(tama.Good)
@@ -129,7 +126,9 @@ namespace tamagotchi
                 Write("Uh oh! Looks like " + tama.Name + " just grew into a spoiled teen!");
                 Write("You should really step up your parenting game...");
             }
-            Console.ReadLine();
+
+            System.Threading.Thread.Sleep(2000);
+            Console.WriteLine();
             tama.TamaTalks(tama.Good ? "Want to play a game!?" : "Entertain me!");
             play = YesNo(tama, you);
 
@@ -149,9 +148,11 @@ namespace tamagotchi
                 {
                     tama.Dicipline += 1;
                     tama.TamaTalks("Good night " + you + "!");
+                    System.Threading.Thread.Sleep(1000);          
                 }
                 else
                 {
+                    tama.Dicipline = (tama.Dicipline != 0 ? tama.Dicipline -= 1 : 0);
                     tama.TamaTalks("So I can stay up all night!?");
                     stayUp = YesNo(tama, you);
 
@@ -161,7 +162,7 @@ namespace tamagotchi
                         tama.WriteTama();
                         Write("Not a wise decision...");
                         lights = false;
-                        Console.ReadLine();
+                        System.Threading.Thread.Sleep(2000);          
                     }
                     else
                     {
@@ -171,47 +172,53 @@ namespace tamagotchi
             }
             else
             {
-                tama.TamaTalks("I'm not going to bed!");
-                lights = YesNo(tama, you);
+                var complaint = new List<string>();
+                complaint.AddRange(new String[] {
+                        "I'm not going to bed!",
+                        "You can't make me!",
+                        "Look at me - NOT SLEEPING! You're not the boss of me!",
+                        });
 
-                if(lights)
+                for (int i = 0; i < 3; i++)
                 {
-                    tama.Happy = (tama.Happy !=0 ? tama.Happy -= 1 : 0 );
-                    tama.Dicipline += 1;
-                    tama.WriteTama();
-                    tama.TamaTalks("You can't make me!");
-                }
-                else
-                {
-                    tama.Dicipline = (tama.Dicipline != 0 ? tama.Dicipline -= 1 : 0);
-                    tama.WriteTama();
-                    tama.TamaTalks("Good, I'm never going to sleep.");
-                }
+                    if (lights) tama.Dicipline += 2;
+                    else tama.Dicipline = (tama.Dicipline != 0 ? tama.Dicipline -= 1 : 0);
 
-                Write("You have to put " + name + " to bed!");
-                lights = YesNo(tama, you);
+                    tama.WriteTama();
+                    tama.TamaTalks(complaint[i]);
+                    lights = YesNo(tama, you);
+                }
 
                 if(!lights)
                 {
-                    tama.Dicipline = (tama.Dicipline != 0 ? tama.Dicipline -= 2 : 0);
-                    tama.Happy = (tama.Happy != 0 ? tama.Happy -= 2 : 0);
-                    tama.WriteTama();
-                    tama.TamaTalks("*going berserk*");
-                    Write("Suit yourself...");
-                    Console.ReadLine();
-                }
-                else
-                {
-                    tama.Happy = (tama.Happy != 0 ? tama.Happy -= 1 : 0);
+                    tama.TamaTalks("Good, I'm never going to sleep.");
+                    Write("You have to put " + name + " to bed!");
+                    lights = YesNo(tama, you);
+                    if (!lights)
+                    {
+                        tama.Dicipline = (tama.Dicipline != 0 ? tama.Dicipline -= 2 : 0);
+                        tama.Happy = (tama.Happy != 0 ? tama.Happy -= 2 : 0);
+                        tama.WriteTama();
+                        tama.TamaTalks("*going berserk*");
+                        Write("Suit yourself...");
+                        System.Threading.Thread.Sleep(2000);
+                    }
+                    else
+                    {
+                        tama.Happy = (tama.Happy != 0 ? tama.Happy -= 1 : 0);
+                        tama.Dicipline += 1;
+                    }
                 }
             }
             Night(tama);
 
             if(!lights)
             {
+                Console.Clear();
                 Write("Since you let "+ tama.Name+ " stay up all night it's not waking up.");
                 Write("If you don't want to end up with a bad pet \r\n you need to let it know who's the boss!");
-                Console.ReadLine();
+                System.Threading.Thread.Sleep(2000);
+                Console.WriteLine();
                 Write("Wake " + tama.Name + " up!"); 
                 bool wake = YesNo(tama, you);
 
@@ -234,7 +241,7 @@ namespace tamagotchi
                     Write(wakeIt[index]);
                     wake = YesNo(tama, you);
                 }
-                if (wake) tama.Dicipline += 2;
+                if (wake) tama.Dicipline += 1;
             }
 
             tama.WriteTama();
@@ -262,7 +269,7 @@ namespace tamagotchi
                 }
 
                 Write(tama.food == "candy" ? "You shouldn't reward such bad behavior with candy..." : "Good, you're starting to make some progress.");
-                Console.ReadLine();
+                System.Threading.Thread.Sleep(2000);          
             }
 
             tama.WriteTama();
@@ -361,6 +368,8 @@ namespace tamagotchi
                 tama.TamaTalks(tama.Happy > 4 ? "You've been so good to me..." : "Thank you for comforting me, even though I acted bad...");
             }
 
+            System.Threading.Thread.Sleep(2000);          
+
             tama.ChangeStage(tama.Happy > 4 ? "angel" : "dead");
             tama.WriteTama();
             if(tama.Good)
@@ -442,11 +451,8 @@ namespace tamagotchi
         {
             bool fed = false;
 
-            if(tama.food != "unfed")
-            {
-                Write("Choose from [ BREAD ] [ CANDY ] [ NOTHING ]");
-                YouTalk(you);
-            }          
+            Write("Choose from [ BREAD ] [ CANDY ] [ NOTHING ]");
+            YouTalk(you);                     
             
             while (fed == false)
             {
@@ -483,9 +489,49 @@ namespace tamagotchi
         static void Night(Tama tama)
         {
             Console.Clear();
-            Console.WriteLine("NIGHT!");
-            Write("Hit ENTER to wake " + tama.Name);
-            Console.ReadLine();
+
+            Console.SetCursorPosition(7, 2);
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("        *   *   *    ");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("NIGHT TIME");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("    *   *   * ");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+
+            var stars = new List<string>();
+            stars.AddRange(new String[] {
+                        "        *       ",
+                        "              *       ",
+                        "    *            ",
+                        "          *          ",
+                        "  *        ",
+                        "           *    ",
+                        "        *      "
+                        });
+
+
+            for (int i = 0; i < 180; i++ )
+            {
+                
+                Random s = new Random();
+                int index = s.Next(stars.Count);
+
+                if(i % 2 == 0)
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                else
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                
+                Console.Write(stars[index]);
+                System.Threading.Thread.Sleep(1);
+                
+             }
+
+            System.Threading.Thread.Sleep(700);
+            Console.ForegroundColor = ConsoleColor.White;
+
         }
 
         

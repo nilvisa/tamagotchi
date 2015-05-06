@@ -24,8 +24,7 @@ namespace tamagotchi
         {
             Name = name;
             Stage = "egg";
-            Color = ConsoleColor.Magenta;
-            food = "unfed";
+            Color = ConsoleColor.DarkMagenta;
         }
 
         public void WriteTama()
@@ -58,14 +57,14 @@ namespace tamagotchi
 
         public void WriteName()
         {
-            Console.SetCursorPosition(7, 2);
-            Console.WriteLine("    ♥  ♥  ♥  {0}  ♥  ♥  ♥", Name);
+            Console.SetCursorPosition(7, 1);
+            Console.WriteLine("  ♥  ♥  ♥  {0}  ♥  ♥  ♥", Name);
             Console.WriteLine();
         }
 
         public void DrawChart()
         {
-            Console.SetCursorPosition(5, 20);
+            Console.SetCursorPosition(5, 17);
       
             Console.Write("Dicipline: ");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -98,7 +97,7 @@ namespace tamagotchi
 
         public void DrawPoop()
         {
-            Console.SetCursorPosition(5, 22);
+            Console.SetCursorPosition(5, 19);
             Console.Write("Poop: ");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             for (var i = 0; i < Poop; i++)
@@ -118,12 +117,8 @@ namespace tamagotchi
             
             switch(Stage)
             {
-                case "egg":
-                    Color = ConsoleColor.Magenta;
-                    Egg();
-                    break;
                 case "baby":
-                    Color = ConsoleColor.DarkMagenta;
+                    Color = ConsoleColor.Magenta;
                     Baby();
                     break;
                 case "goodTeen":
@@ -143,7 +138,7 @@ namespace tamagotchi
                     BadAdult();
                     break;
                 case "angel":
-                    Color = ConsoleColor.DarkBlue;
+                    Color = ConsoleColor.DarkCyan;
                     Angel();
                     break;
                 case "dead":
@@ -165,6 +160,51 @@ namespace tamagotchi
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(String);
             Console.WriteLine();
+            System.Threading.Thread.Sleep(1000);          
+
+        }
+
+        public void Hatching()
+        {
+            for(int i = 0; i < 15; i++)
+            {
+                Console.Clear();
+
+                WriteName();
+
+                if (i % 2 == 0)
+                    Egg();
+                else if (i % 3 == 0)
+                    Egg2();
+                else
+                    Egg3();
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine(Name + " is hatching!!");
+                System.Threading.Thread.Sleep(200);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            Console.Clear();
+            WriteName();
+            Egg();
+            Console.ForegroundColor = ConsoleColor.White;
+            System.Threading.Thread.Sleep(500);
+
+            Console.Clear();
+            WriteName();
+            Egg4();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            TamaTalks("MOMMY!");
+            System.Threading.Thread.Sleep(400);
+            TamaTalks("*squeeek*");
+            System.Threading.Thread.Sleep(800);
+            Console.ForegroundColor = ConsoleColor.White;
 
         }
 
@@ -182,6 +222,55 @@ namespace tamagotchi
             Console.WriteLine("               ■          ■  ");
             Console.WriteLine("                 ■ ■■■■ ■    ");
          }
+
+        void Egg2()
+        {
+            Console.ForegroundColor = Color;
+            Console.WriteLine("                   ■■        ");
+            Console.WriteLine("                 ■    ■      ");
+            Console.WriteLine("               ■        ■    ");
+            Console.WriteLine("              ■          ■   ");
+            Console.WriteLine("             ■             ■  ");
+            Console.WriteLine("            ■               ■ ");
+            Console.WriteLine("            ■               ■");
+            Console.WriteLine("             ■              ■");
+            Console.WriteLine("               ■          ■  ");
+            Console.WriteLine("                 ■ ■■■■ ■    ");
+        }
+
+        void Egg3()
+        {
+            Console.ForegroundColor = Color;
+            Console.WriteLine("                     ■■      ");
+            Console.WriteLine("                   ■    ■     ");
+            Console.WriteLine("                 ■        ■   ");
+            Console.WriteLine("               ■           ■  ");
+            Console.WriteLine("              ■             ■ ");
+            Console.WriteLine("             ■               ■");
+            Console.WriteLine("             ■               ■");
+            Console.WriteLine("             ■              ■");
+            Console.WriteLine("               ■          ■  ");
+            Console.WriteLine("                 ■ ■■■■ ■    ");
+        }
+
+        void Egg4()
+        {
+            Console.ForegroundColor = Color;
+            Console.WriteLine("                    ■■       ");
+            Console.WriteLine("                  ■    ■     ");
+            Console.WriteLine("                ■        ■   ");
+            Console.WriteLine("              ■            ■ ");
+            Console.WriteLine("             ■  ■ ■ ■■ ■ ■  ■");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("              ■  ■      ■  ■ ");
+            Console.WriteLine("              ■    ■■■■    ■ ");
+            Console.ForegroundColor = Color;
+            Console.WriteLine("             ■  ■ ■ ■■ ■ ■  ■");
+            Console.WriteLine("             ■              ■");
+            Console.WriteLine("             ■              ■");
+            Console.WriteLine("               ■          ■  ");
+            Console.WriteLine("                 ■ ■■■■ ■    ");
+        }
 
 
         void Baby()
