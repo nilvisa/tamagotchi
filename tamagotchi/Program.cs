@@ -185,6 +185,7 @@ namespace tamagotchi
                     else tama.Dicipline = (tama.Dicipline != 0 ? tama.Dicipline -= 1 : 0);
 
                     tama.TamaTalks(complaint[i]);
+                    Write("Send " + tama.Name + " to bed?");
                     lights = YesNo(tama, you);
                 }
 
@@ -286,7 +287,7 @@ namespace tamagotchi
 
             if(tama.Poop > 0 || tama.Happy < 3)
             {
-                Write("Oh no, " + tama.Name + " isn't doing so well... \r\nYou have to give it some medecine!");
+                Write("Oh no, " + tama.Name + " isn't doing so well... \r\nYou have to give it some medicine!");
                 bool meds = YesNo(tama, you);
                 if (!meds)
                 {

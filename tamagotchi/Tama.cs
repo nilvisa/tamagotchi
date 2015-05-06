@@ -40,9 +40,7 @@ namespace tamagotchi
             DrawTama();
             DrawChart();
 
-            if (Poop > 0) DrawPoop();
-            
-            
+            if (Poop > 0) DrawPoop();            
         }
 
         public void ChangeStage(string stage)
@@ -108,13 +106,11 @@ namespace tamagotchi
 
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine();
-           
+            Console.WriteLine();           
         }
 
         public void DrawTama()
-        {
-            
+        {            
             switch(Stage)
             {
                 case "baby":
@@ -149,7 +145,6 @@ namespace tamagotchi
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
-
         }
 
         public void TamaTalks(string String)
@@ -160,8 +155,7 @@ namespace tamagotchi
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(String);
             Console.WriteLine();
-            System.Threading.Thread.Sleep(1000);          
-
+            System.Threading.Thread.Sleep(1000);  
         }
 
         public void Hatching()
@@ -205,7 +199,6 @@ namespace tamagotchi
             TamaTalks("*squeeek*");
             System.Threading.Thread.Sleep(800);
             Console.ForegroundColor = ConsoleColor.White;
-
         }
 
         void Egg()
