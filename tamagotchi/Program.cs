@@ -54,13 +54,13 @@ namespace tamagotchi
 
             tama.WriteTama();
             tama.TamaTalks(tama.food != "nothing" ? "Nom nom nom, delicious " + tama.food + "!" : "Iiih I'm just a baby, I need food!");
-            tama.TamaTalks("It's getting late and I'm really sleepy. \r\n Will you turn off the lights for me?");
+            tama.TamaTalks("It's getting late and I'm really sleepy. \r\nWill you turn off the lights for me?");
             bool lights = YesNo(tama, you);
             if (lights)
             {
                 tama.Happy += 1;
                 tama.Dicipline += 1;
-                Night(tama);
+                Night();
             }
             else
             {
@@ -71,7 +71,7 @@ namespace tamagotchi
                 if (lights)
                 {
                     tama.Happy += 1;
-                    Night(tama);
+                    Night();
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace tamagotchi
                     tama.TamaTalks("*throws temper tantrum*");
                     Write("Sorry, but now both you and " + tama.Name + " will be upp all night...");
                     System.Threading.Thread.Sleep(2000);
-                    Night(tama);
+                    Night();
                 }
             }
 
@@ -116,9 +116,9 @@ namespace tamagotchi
             tama.WriteTama();
             if(tama.Good)
             {
-                tama.TamaTalks("Thank you "+you+"!");
+                tama.TamaTalks(poop ? "Thank you "+you+"!" : "I guess it can be taken care of later...");
                 Write("Oh! " + tama.Name + " just grew!");
-                Write("And it looks like it's healthy and well disciplined.\r\n Keep raising it this way!");
+                Write("And it looks like it's healthy and well disciplined.\r\nKeep raising it this way!");
             }
             else
             {
@@ -181,10 +181,9 @@ namespace tamagotchi
 
                 for (int i = 0; i < 3; i++)
                 {
-                    if (lights) tama.Dicipline += 2;
+                    if (lights) tama.Dicipline += 1;
                     else tama.Dicipline = (tama.Dicipline != 0 ? tama.Dicipline -= 1 : 0);
 
-                    tama.WriteTama();
                     tama.TamaTalks(complaint[i]);
                     lights = YesNo(tama, you);
                 }
@@ -210,13 +209,13 @@ namespace tamagotchi
                     }
                 }
             }
-            Night(tama);
+            Night();
 
             if(!lights)
             {
                 Console.Clear();
                 Write("Since you let "+ tama.Name+ " stay up all night it's not waking up.");
-                Write("If you don't want to end up with a bad pet \r\n you need to let it know who's the boss!");
+                Write("If you don't want to end up with a bad pet \r\nyou need to let it know who's the boss!");
                 System.Threading.Thread.Sleep(2000);
                 Console.WriteLine();
                 Write("Wake " + tama.Name + " up!"); 
@@ -245,7 +244,7 @@ namespace tamagotchi
             }
 
             tama.WriteTama();
-            tama.TamaTalks(tama.Good ? "Good morning "+you+"! \r\n Can I have some breakfast, please?" : "Why did you wake me up!? \r\n You better give me something tasty for breakfast... \r\n I only want candy!");
+            tama.TamaTalks(tama.Good ? "Good morning "+you+"! \r\nCan I have some breakfast, please?" : "Why did you wake me up!? \r\nYou better give me something tasty for breakfast... \r\n I only want candy!");
             Feed(tama, you);
 
             if(!tama.Good)
@@ -260,8 +259,9 @@ namespace tamagotchi
                         "I told you! I don't want bread, I want candy!!",
                         "NOOOO BREEEAAAD!!!"
                         });
-                    
-                    tama.Hungry = (tama.Hungry != 0 ? tama.Hungry -= 3 : 0);
+
+                    tama.Dicipline += 1;
+                    tama.WriteTama();
                     tama.TamaTalks(complaint[i]);
                     i += 1;
                     if (i == 3) break;
@@ -273,23 +273,26 @@ namespace tamagotchi
             }
 
             tama.WriteTama();
-            tama.TamaTalks(tama.Good ? "YUMMM, " + tama.food + "!" : tama.food + "... *pout*");
+            if (tama.food == "bread" && !tama.Good) tama.TamaTalks(tama.food + "Bread... *pout*");
+            if (tama.food != "nothing" && tama.Good) tama.TamaTalks("YUMMM, " + tama.food + "!");
+            if (tama.food == "nothing") tama.TamaTalks(tama.Good ? "Ok, but I'm really hungry..." : "Nothing, what! You're not feeding me...?");
+
             if(tama.Poop > 0)
             {
-                Write("Looks like you need to clean up after "+tama.Name+". \r\n Will you do it");
+                Write("Looks like you need to clean up after "+tama.Name+". \r\nWill you do it");
                 poop = YesNo(tama, you);
                 if(poop) tama.Poop = 0;
-            }
+            }            
 
-            if(tama.Poop < 0 || tama.Happy < 3)
+            if(tama.Poop > 0 || tama.Happy < 3)
             {
-                Write("Oh no, " + tama.Name + " isn't doing so well... \r\n You have to give it some medecine!");
+                Write("Oh no, " + tama.Name + " isn't doing so well... \r\nYou have to give it some medecine!");
                 bool meds = YesNo(tama, you);
                 if (!meds)
                 {
                     tama.ChangeStage("dead");
                     tama.WriteTama();
-                    Write("Why, " + you + "!? \r\n Now " + tama.Name + " is dead...");
+                    Write("Why, " + you + "!? \r\nNow " + tama.Name + " is dead...");
                     Write("You really shouldn't have pets, " + you + "...");
                     Console.WriteLine();
                     Write("Hit ENTER to shut down.");
@@ -302,10 +305,11 @@ namespace tamagotchi
                     tama.Happy += 2;
                 }
             }
+            else System.Threading.Thread.Sleep(2000);
 
             tama.ChangeStage(tama.Dicipline > 3 ? "goodAdult" : "badAdult");
             tama.WriteTama();
-            Write(tama.Good ? "Good job "+you+", \r\n you've raised your "+tama.Name+" to become good and well behaved pet!" : "Sorry, "+you+". You haven't done such a good job in raising "+tama.Name+"...");
+            Write(tama.Good ? "Good job "+you+", \r\nyou've raised your "+tama.Name+" to become good and well behaved pet!" : "Sorry, "+you+". You haven't done such a good job in raising "+tama.Name+"...");
             if (tama.Good)
             {
                 tama.TamaTalks("Would you like to play with me?");
@@ -316,7 +320,7 @@ namespace tamagotchi
                 {
                     var wannaPlay = new List<string>();
                     wannaPlay.AddRange(new String[] {
-                        "But I thought we had fun together,\r\n won't you play with me?",
+                        "But I thought we had fun together,\r\nwon't you play with me?",
                         "You don't like me anymore? I want to play with you!",
                         "Now I'm very sad... Please play with me?",
                         "*cries*"
@@ -344,7 +348,7 @@ namespace tamagotchi
                         "NOOOOO!"
                         });
 
-                    tama.Happy += 1;
+                    tama.Happy -= 1;
                     tama.Dicipline += 1;
                     tama.TamaTalks(wannaPlay[i]);
                     Write("Play with " + tama.Name);
@@ -358,15 +362,19 @@ namespace tamagotchi
             if(tama.Good) tama.TamaTalks(play ? "That was so much fun " + you + " !" : "I'm sad now...");
             else tama.TamaTalks(play ? "That was so much fun... NOT!" : "What ever...");
 
+            Console.WriteLine();
+            tama.TamaTalks("I'm not feeling very well...");
             tama.TamaTalks("I'm so cold, will you comfort me?");
             var comfort = YesNo(tama, you);
 
-            if(comfort)
+            if (comfort)
             {
                 tama.Happy += 2;
                 tama.TamaTalks("It feels like I'm slipping away... \r\n");
-                tama.TamaTalks(tama.Happy > 4 ? "You've been so good to me..." : "Thank you for comforting me, even though I acted bad...");
+                tama.TamaTalks(tama.Good ? "You've been so good to me..." : "Thank you for comforting me, even though I acted bad...");
             }
+            else
+                tama.Happy = 3;
 
             System.Threading.Thread.Sleep(2000);          
 
@@ -382,7 +390,7 @@ namespace tamagotchi
             }
             else
             {
-                Write(tama.Name + " has passed... \r\n Sorry, but you're a terrible pet-owner "+you);
+                Write(tama.Name + " has passed... \r\nSorry, but you're a terrible pet owner "+you);
                 Write("Hit ENTER to exit the game.");
                 Console.ReadLine();
                 return;
@@ -391,9 +399,6 @@ namespace tamagotchi
 
           
         }
-
-
-
 
 
 
@@ -486,21 +491,9 @@ namespace tamagotchi
         }
 
        
-        static void Night(Tama tama)
+        static void Night()
         {
             Console.Clear();
-
-            Console.SetCursorPosition(7, 2);
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write("        *   *   *    ");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write("NIGHT TIME");
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write("    *   *   * ");
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-
             var stars = new List<string>();
             stars.AddRange(new String[] {
                         "        *       ",
@@ -513,7 +506,7 @@ namespace tamagotchi
                         });
 
 
-            for (int i = 0; i < 180; i++ )
+            for (int i = 0; i < 200; i++ )
             {
                 
                 Random s = new Random();
@@ -521,11 +514,13 @@ namespace tamagotchi
 
                 if(i % 2 == 0)
                     Console.ForegroundColor = ConsoleColor.Gray;
+                else if(i % 3 == 0)
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                 else
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
                 
                 Console.Write(stars[index]);
-                System.Threading.Thread.Sleep(1);
+                System.Threading.Thread.Sleep(2);
                 
              }
 

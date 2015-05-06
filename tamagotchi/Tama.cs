@@ -126,7 +126,7 @@ namespace tamagotchi
                     GoodTeen();
                     break;
                 case "badTeen":
-                    Color = ConsoleColor.Red;
+                    Color = ConsoleColor.Green;
                     BadTeen();
                     break;
                 case "goodAdult":
@@ -134,7 +134,7 @@ namespace tamagotchi
                     GoodAdult();
                     break;
                 case "badAdult":
-                    Color = ConsoleColor.DarkRed;
+                    Color = ConsoleColor.DarkGreen;
                     BadAdult();
                     break;
                 case "angel":
